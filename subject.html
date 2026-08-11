@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subject Handouts | Handout Vault</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Subject Hero Section -->
+  <header class="hero" style="padding: 0 16px; margin-bottom: 30px;">
+    <div class="hero-content">
+      <h1 id="subject-title" class="headerlanding">Loading...</h1>
+      <p id="subject-desc">Fetching handouts and study resources...</p>
+      <br>
+      <a href="index.html" class="card-btn" style="display: inline-block; width: auto; min-width: 180px; padding: 12px 24px;">← Back to Courses</a>
+    </div>
+  </header>
+
+  <!-- Responsive Container for Dynamic Handout Cards -->
+  <main id="handouts-container" style="max-width: 900px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; padding: 0 16px 40px 16px;">
+  </main>
+
+  <!-- Dynamic Content Logic -->
+  <script>
+    const subjects = {
+      'intro-computing': {
+        title: 'Introduction to Computing',
+        desc: 'Fundamentals of hardware, software, networking, computer history, and basic algorithmic problem solving.',
+        handouts: [
+          { name: 'Module 1: Hardware & Software Basics', file: 'files/intro-computing-mod1.pdf' },
+          { name: 'Module 2: Operating Systems & Networking', file: 'files/intro-computing-mod2.pdf' }
+        ]
+      },
+      'contemporary-world': {
+        title: 'The Contemporary World',
+        desc: 'Overview of globalization, global economies, international relations, and modern socio-cultural developments.',
+        handouts: [
+          { name: 'Module 1: Structures of Globalization', file: 'files/contemporary-world-mod1.pdf' },
+          { name: 'Module 2: Global Population & Mobility', file: 'files/contemporary-world-mod2.pdf' }
+        ]
+      },
+      'understanding-self': {
+        title: 'Understanding The Self',
+        desc: 'Exploration of personal identity, psychological theories, self-care, and holistic personal development.',
+        handouts: [
+          { name: 'Module 1: The Self from Various Perspectives', file: 'files/understanding-self-mod1.pdf' },
+          { name: 'Module 2: Unpacking the Self', file: 'files/understanding-self-mod2.pdf' }
+        ]
+      },
+      'programming-1': {
+        title: 'Computer Programming 1',
+        desc: 'Core programming concepts including control structures, variables, functions, logic building, and syntax basics.',
+        handouts: [
+          { name: 'Module 1: Variables', file: 'files/prog1-mod1.pdf' },
+          { name: 'Module 2: Control Statements', file: 'files/prog1-mod2.pdf' },
+          { name: 'Module 3: Functions & Arrays', file: 'files/prog1-mod3.pdf' }
+        ]
+      },
+      'purposive-comm': {
+        title: 'Purposive Communication',
+        desc: 'Writing, speaking, and presenting effectively for academic, technical, and professional audiences.',
+        handouts: [
+          { name: 'Module 1: Communication Processes & Ethics', file: 'files/purposive-comm-mod1.pdf' },
+          { name: 'Module 2: Public Speaking & Presentation Skills', file: 'files/purposive-comm-mod2.pdf' }
+        ]
+      },
+      'pop-culture': {
+        title: 'Philippine Pop Culture',
+        desc: 'Analysis of contemporary local media, pop culture trends, societal impact, and modern artistic expressions.',
+        handouts: [
+          { name: 'Module 1: History of Philippine Mass Media', file: 'files/pop-culture-mod1.pdf' },
+          { name: 'Module 2: Modern Trends & Social Impact', file: 'files/pop-culture-mod2.pdf' }
+        ]
+      },
+      'nstp': {
+        title: 'National Service Training Program',
+        desc: 'Community welfare, civic consciousness, disaster preparedness, and national service responsibilities.',
+        handouts: [
+          { name: 'Module 1: Disaster Risk Reduction & Management', file: 'files/nstp-mod1.pdf' },
+          { name: 'Module 2: Community Development Leadership', file: 'files/nstp-mod2.pdf' }
+        ]
+      },
+      'euthenics': {
+        title: 'Euthenics',
+        desc: 'Student life adaptation, academic skills development, ethics, and campus discipline guidance.',
+        handouts: [
+          { name: 'Module 1: Academic Life & Values', file: 'files/euthenics-mod1.pdf' },
+          { name: 'Module 2: Student Conduct & Career Readiness', file: 'files/euthenics-mod2.pdf' }
+        ]
+      },
+      'pathfit': {
+        title: 'Pathfit',
+        desc: 'Physical fitness, movement competency, health education, and active lifestyle practices.',
+        handouts: [
+          { name: 'Module 1: Physical Fitness Concepts & Assessment', file: 'files/pathfit-mod1.pdf' },
+          { name: 'Module 2: Movement Competency & Exercise Planning', file: 'files/pathfit-mod2.pdf' }
+        ]
+      }
+    };
+
+    // Extract query parameter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const courseKey = urlParams.get('course');
+    const container = document.getElementById('handouts-container');
+
+    // Render course header and handouts
+    if (courseKey && subjects[courseKey]) {
+      const course = subjects[courseKey];
+      document.title = `${course.title} | Handout Vault`;
+      document.getElementById('subject-title').innerText = course.title;
+      document.getElementById('subject-desc').innerText = course.desc;
+
+      // Loop over each handout object and build a responsive card
+      course.handouts.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'content-card';
+        card.style.padding = '20px';
+
+        card.innerHTML = `
+          <h2 class="card-title" style="margin-bottom: 16px; font-size: clamp(1.1rem, 3vw, 1.3rem);">${item.name}</h2>
+          <iframe src="${item.file}" width="100%" style="height: clamp(350px, 60vh, 550px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; background: rgba(2, 6, 23, 0.5);"></iframe>
+          <a href="${item.file}" download class="card-btn" style="margin-top: 20px;">Download Handout (PDF)</a>
+        `;
+
+        container.appendChild(card);
+      });
+    } else {
+      document.getElementById('subject-title').innerText = 'Course Not Found';
+      document.getElementById('subject-desc').innerText = 'Please return to the main page and select a valid course.';
+    }
+  </script>
+
+</body>
+</html>
