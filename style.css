@@ -170,3 +170,56 @@ body {
     padding: 16px;
   }
 }
+
+/* 1. Define the rotation keyframes */
+    @keyframes neonRotate {
+      0% { --neon-angle: 0deg; }
+      100% { --neon-angle: 360deg; }
+    }
+
+    /* 2. Register the custom property (Crucial for smooth gradient animation) */
+    @property --neon-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    /* 3. Base style for the card */
+    .neon-card {
+      position: relative;
+      flex: 1 1 250px;
+      background: #020617; /* Matches your background */
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      z-index: 1; /* Required for pseudo-element stacking */
+      transition: 0.3s ease;
+    }
+
+    /* 4. The animated border (Pseudo-element) */
+    .neon-card::before {
+      content: '';
+      position: absolute;
+      inset: -2px; /* Pulls the pseudo-element slightly outside the main div */
+      border-radius: 14px; /* Slightly larger than main div radius */
+      /* The gradient that rotates based on --neon-angle */
+      background: conic-gradient(from var(--neon-angle), #38bdf8, #00f2fe, #1d4ed8, #38bdf8);
+      z-index: -1; /* Puts it behind the main div text */
+      animation: neonRotate 4s linear infinite; /* Applies the animation */
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4); /* Adds the 'glow' */
+    }
+
+    /* 5. Inner background overlay (Creates the cutout effect) */
+    .neon-card::after {
+      content: '';
+      position: absolute;
+      inset: 0; /* Covers the main div area exactly */
+      background: rgba(15, 23, 42, 0.85); /* Slightly transparent inside */
+      border-radius: 12px;
+      z-index: -1; /* Placed between the border and the text */
+      backdrop-filter: blur(8px);
+    }
+
+    .neon-card:hover {
+      transform: scale(1.05);
+    }
