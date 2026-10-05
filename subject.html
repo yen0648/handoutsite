@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Subject Handouts | Handout Vault</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Hide iframe on mobile devices where embedded PDFs aren't supported well */
+    @media (max-width: 768px) {
+      .pdf-iframe {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -126,8 +134,11 @@
 
         card.innerHTML = `
           <h2 class="card-title" style="margin-bottom: 16px; font-size: clamp(1.1rem, 3vw, 1.3rem);">${item.name}</h2>
-          <iframe src="${item.file}" width="100%" style="height: clamp(350px, 60vh, 550px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; background: rgba(2, 6, 23, 0.5);"></iframe>
-          <a href="${item.file}" download class="card-btn" style="margin-top: 20px;">Download Handout (PDF)</a>
+          <iframe class="pdf-iframe" src="${item.file}" width="100%" style="height: clamp(350px, 60vh, 550px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; background: rgba(2, 6, 23, 0.5);"></iframe>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;">
+            <a href="${item.file}" target="_blank" rel="noopener noreferrer" class="card-btn" style="flex: 1; text-align: center; min-width: 140px; margin-top: 0;">Preview in New Tab</a>
+            <a href="${item.file}" download class="card-btn" style="flex: 1; text-align: center; min-width: 140px; margin-top: 0; background: #334155;">Download PDF</a>
+          </div>
         `;
 
         container.appendChild(card);
